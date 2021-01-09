@@ -1,0 +1,53 @@
+mod commands;
+mod handlers;
+
+use crate::handlers::Handler;
+
+use crate::commands::{
+    ECHO_COMMAND, EMBED_COMMAND, REDPANDA_COMMAND, ROLE_COMMAND, RROLE_COMMAND, BOOP_COMMAND
+};
+
+use serenity::Client;
+use serenity::framework::StandardFramework;
+use serenity::framework::standard::macros::group;
+use serenity::framework::standard::DispatchError::{NotEnoughArguments, TooManyArguments};
+use std::fs;
+
+#[group("misc")]
+#[commands(echo, embed)]
+struct Misc;
+
+#[group("admin")]
+#[commands(role, rrole)]
+struct Admin;
+
+#[group("wahs")]
+#[commands(redpanda, boop)]
+struct Wahs;
+
+fn main(){
+    let token = fs::read_to_string("token.txt").expect("Something went wrong reading the file");
+    let mut client = Client::new(&token, Handler).unwrap();
+    client.with_framework(StandardFramework::new()
+        .configure(|c| c.prefix("!"))
+        .group(&ADMIN_GROUP)
+        .group(&MISC_GROUP)
+        .group(&WAHS_GROUP)
+    .on_dispatch_error(|context, msg, error| {
+        match error {
+            NotEnoughArguments { min, given } => {
+                let s = format!("Not enough arguments give! {} are needed, {} where given", min, given);
+                let _ = msg.channel_id.say(&context.http, &s);
+            },
+            TooManyArguments { max, given } => {
+                let s = format!("Too many arguments given! {} max, {} where given. Try wrapping them in \"quotes\"", max, given);
+                let _ = msg.channel_id.say(&context.http, &s);
+            },
+            _ => println!("Unhandled dispatch error."),
+        }
+    })
+    );
+
+    println!("Logging in... ");
+    client.start().expect("Could not start client.");
+}
