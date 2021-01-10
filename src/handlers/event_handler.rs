@@ -1,13 +1,8 @@
 pub mod event_handler_mod {
     use serenity::prelude::*;
     use serenity::model::prelude::*;
-    use chrono::{Timelike, Utc};
-    use std::fs;
-    use serenity::utils;
-    use serde_json::Value;
-    use std::io;
-    use std::fs::File;
-    use std::io::{Write};
+
+    use crate::loops::main_mod::main_loop;
 
     pub struct Handler;
     impl EventHandler for Handler {
@@ -46,41 +41,10 @@ pub mod event_handler_mod {
                     let _ = msg.channel_id.say(&context, format!("{}", response));
                 }
             }
-
-            // Edit the bot?! OwO
-            let changed = fs::read_to_string("handlers/changed.txt").expect("Something went wrong reading the file");
-            let now = Utc::now();
-            let minute = now.minute();
-            if minute == 00 && changed == "false"{
-                let body = reqwest::blocking::get("https://redpanda.pics/random").unwrap().text().unwrap();
-                let v: Value = serde_json::from_str(&body).unwrap();
-                let image_type = v["type"].to_string().replace('"', "");
-
-                let valid_file_types = vec!["png", "jpg", "jpeg"];
-                if valid_file_types.iter().any(|&i| i==image_type) {
-                    let image_url = v["url"].to_string().replace('"', "");
-                    let response = reqwest::blocking::get(&image_url).unwrap();
-                    let bytes = response.bytes().unwrap();
-                    let mut slice: &[u8] = bytes.as_ref();
-                    let mut out = File::create("image.jpg").expect("failed to create file");
-                    io::copy(&mut slice, &mut out).expect("failed to copy content");
-
-                    let base64 = utils::read_image("./image.jpg").expect("Failed to read image");
-                    let _ = context.cache.write().user.edit(&context, |p|
-                        p.avatar(Some(&base64)));
-
-                    let mut file = File::create("handlers/changed.txt").unwrap();
-                    let _ = file.write_all(b"true");
-
-                    println!("Updated bot pfp!");
-                }
-            } else if minute == 01 && changed == "true" {
-                let mut file = File::create("handlers/changed.txt").unwrap();
-                let _ = file.write_all(b"false");
-            }
         }
-        fn ready(&self, _context: Context, data: Ready){
+        fn ready(&self, context: Context, data: Ready){
             println!("Logged in as {}!", data.user.name);
+            std::thread::spawn(|| main_loop(context));
         }
     }
 

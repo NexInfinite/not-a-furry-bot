@@ -1,5 +1,6 @@
 mod commands;
 mod handlers;
+mod loops;
 
 use crate::handlers::Handler;
 
@@ -52,19 +53,3 @@ fn main(){
     println!("Logging in...");
     client.start().expect("Could not start client.");
 }
-
-// fn main_loop() {
-//     loop {
-//         let now = Utc::now();
-//         let minute = now.minute();
-//         println!("{}", minute);
-//         if minute == 18 {
-//             update_pfp();
-//         }
-//         thread::sleep(Duration::from_secs(60))
-//     }
-// }
-//
-// fn update_pfp() {
-//     println!("Boiiii you stoopid");
-// }
