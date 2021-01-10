@@ -13,6 +13,7 @@ use serenity::framework::standard::macros::group;
 use serenity::framework::standard::DispatchError::{NotEnoughArguments, TooManyArguments};
 use std::fs;
 
+
 #[group("misc")]
 #[commands(echo, embed)]
 struct Misc;
@@ -26,6 +27,7 @@ struct Admin;
 struct Wahs;
 
 fn main(){
+    // std::thread::spawn(main_loop);
     let token = fs::read_to_string("token.txt").expect("Something went wrong reading the file");
     let mut client = Client::new(&token, Handler).unwrap();
     client.with_framework(StandardFramework::new()
@@ -47,7 +49,22 @@ fn main(){
         }
     })
     );
-
-    println!("Logging in... ");
+    println!("Logging in...");
     client.start().expect("Could not start client.");
 }
+
+// fn main_loop() {
+//     loop {
+//         let now = Utc::now();
+//         let minute = now.minute();
+//         println!("{}", minute);
+//         if minute == 18 {
+//             update_pfp();
+//         }
+//         thread::sleep(Duration::from_secs(60))
+//     }
+// }
+//
+// fn update_pfp() {
+//     println!("Boiiii you stoopid");
+// }
