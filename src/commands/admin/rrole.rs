@@ -7,7 +7,11 @@ pub mod rrole_mod {
         },
     };
     #[command]
-    #[description("Remove a role from yourself. Usage !rrole <role_name>")]
+    #[description("Remove a role from yourself")]
+    #[usage("<role name>")]
+    #[example("'this is a role'")]
+    #[only_in(guilds)]
+    #[required_permissions(MANAGE_ROLES)]
     #[min_args(1)]
     #[max_args(1)]
     fn rrole(ctx: &mut Context, msg: &Message, args: Args) -> CommandResult {

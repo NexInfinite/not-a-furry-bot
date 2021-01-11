@@ -8,7 +8,9 @@ pub mod embed_mod {
         utils::Colour,
     };
     #[command]
-    #[description("Usage: !embed <title> <descirption> [<r> <g> <b>]")]
+    #[description("Make an embed with a title, description, and custom colours")]
+    #[usage("<title> <description> [<r> <g> <b>]")]
+    #[example("Hey 'thanks for stopping by' 255 255 0")]
     #[min_args(2)]
     #[max_args(5)]
     fn embed(ctx: &mut Context, msg: &Message, mut arguments: Args) -> CommandResult {

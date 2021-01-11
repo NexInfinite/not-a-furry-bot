@@ -3,12 +3,17 @@
          prelude::*,
          model::prelude::*,
          framework::standard::{
-             CommandResult, macros::command,
+             CommandResult, macros::command, Args
          },
      };
      #[command]
-     pub fn echo(ctx: &mut Context, msg: &Message) -> CommandResult {
-        msg.channel_id.say(&ctx.http, format!("{}", msg.content.strip_prefix("!echo").unwrap()))?;
-        return Ok(())
+     #[usage("<text>")]
+     #[example("'hello i am echoing things'")]
+     #[max_args(1)]
+     #[min_args(1)]
+     pub fn echo(ctx: &mut Context, msg: &Message, args: Args) -> CommandResult {
+         let text = args.current().unwrap().replace("'", "").replace('"', "");
+         msg.channel_id.say(&ctx.http, format!("{}", text))?;
+         return Ok(())
     }
 }

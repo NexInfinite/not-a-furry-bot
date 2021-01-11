@@ -44,6 +44,10 @@ pub mod event_handler_mod {
         }
         fn ready(&self, context: Context, data: Ready){
             println!("Logged in as {}!", data.user.name);
+            let activity = Activity::listening("f!help");
+            let status = OnlineStatus::DoNotDisturb;
+            context.to_owned().set_presence(Some(activity), status);
+
             std::thread::spawn(|| main_loop(context));
         }
     }

@@ -7,7 +7,11 @@ pub mod role_mod {
         },
     };
     #[command]
-    #[description("Give yourself a role. Usage !role <role_name>")]
+    #[description("Give yourself a role.")]
+    #[usage("<role name>")]
+    #[example("'this is a role'")]
+    #[only_in(guilds)]
+    #[required_permissions(MANAGE_ROLES)]
     #[min_args(1)]
     #[max_args(1)]
     fn role(ctx: &mut Context, msg: &Message, args: Args) -> CommandResult {

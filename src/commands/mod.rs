@@ -4,6 +4,7 @@ pub mod wahs;
 
 pub use crate::commands::misc::echo::echo_mod::ECHO_COMMAND;
 pub use crate::commands::misc::embed::embed_mod::EMBED_COMMAND;
+pub use crate::commands::misc::help::help_mod::MY_HELP;
 
 pub use crate::commands::admin::role::role_mod::ROLE_COMMAND;
 pub use crate::commands::admin::rrole::rrole_mod::RROLE_COMMAND;

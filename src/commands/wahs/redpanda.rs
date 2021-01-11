@@ -13,6 +13,7 @@ pub mod redpanda_mod {
 
     #[command]
     #[description("Get a cutie red panda uwu")]
+    #[usage("")]
     #[max_args(0)]
     fn redpanda(ctx: &mut Context, msg: &Message) -> CommandResult {
         let body = reqwest::blocking::get("https://redpanda.pics/random")?.text()?;
