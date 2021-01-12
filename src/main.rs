@@ -36,7 +36,7 @@ fn main(){
     let mut client = Client::new(&token, Handler).unwrap();
     client.with_framework(StandardFramework::new()
         .configure(|c| c
-            .prefixes(vec!["f!", "nexin ", "nex ", "uwu ", "owo ", "cutie "])
+            .prefixes(vec!["f!", , "nex ", "uwu ", "owo ", "cutie "])
             .no_dm_prefix(true)
             .on_mention(Some(serenity::model::id::UserId::from(797194753266810890)))
         )
