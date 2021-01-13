@@ -5,7 +5,7 @@ mod loops;
 use crate::handlers::Handler;
 
 use crate::commands::{
-    ECHO_COMMAND, EMBED_COMMAND, REDPANDA_COMMAND, ROLE_COMMAND, RROLE_COMMAND, BOOP_COMMAND, MY_HELP
+    ECHO_COMMAND, EMBED_COMMAND, REDPANDA_COMMAND, ROLE_COMMAND, RROLE_COMMAND, BOOP_COMMAND, MY_HELP, INFO_COMMAND
 };
 
 use serenity::Client;
@@ -17,7 +17,7 @@ use std::fs;
 
 #[group("misc")]
 #[description("Miscellaneous commands that may be removed in the future.")]
-#[commands(echo, embed)]
+#[commands(echo, embed, info)]
 struct Misc;
 
 #[group("admin")]
@@ -36,7 +36,7 @@ fn main(){
     let mut client = Client::new(&token, Handler).unwrap();
     client.with_framework(StandardFramework::new()
         .configure(|c| c
-            .prefixes(vec!["f!", , "nex ", "uwu ", "owo ", "cutie "])
+            .prefixes(vec!["f!", "nex ", "uwu ", "owo ", "cutie "])
             .no_dm_prefix(true)
             .on_mention(Some(serenity::model::id::UserId::from(797194753266810890)))
         )
